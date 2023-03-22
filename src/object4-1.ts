@@ -48,3 +48,7 @@ const ob1:person = {name:{first:'taro', second:'yamada'}, age:39}
 const {name:{first,second}, age} = ob1                            // first,second,ageの３つの変数をオブジェクトの構造にしたがって定義。
 // const {name:{first}} = ob1                                     // firstのみがほしい場合はオブジェクトの構造にしたがうとこんな感じ
 console.log(first + '-' + second + '::' + age)
+
+
+// プロパティのオプション：名前の後に？をつけるとnullを許容する
+// Readonly: 書き込み禁止にする。
