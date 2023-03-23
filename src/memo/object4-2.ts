@@ -1,4 +1,4 @@
-class Person {
+class Person1 {
     name: string = 'no-name'
     mail?:string
     age?:number
@@ -14,7 +14,7 @@ class Person {
     }
 }
 
-const taro = new Person('taro', 'yamada@example.com', 18)
+const taro = new Person1('taro', 'yamada@example.com', 18)
 taro.print()
 
 
