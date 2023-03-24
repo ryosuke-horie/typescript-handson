@@ -1,10 +1,12 @@
 let table:HTMLTableElement
 let message:HTMLInputElement
 
+// データから生成した内容をテーブルに追加する
 function showTable(html:string) {
     table.innerHTML = html
 }
 
+// ボタンが押されたときの処理
 function doAction() {
     const msg = message.value
     memo.add({message:msg,date:new Date()})
@@ -13,6 +15,7 @@ function doAction() {
     showTable(memo.getHtml())
 }
 
+// 初期化ボタンが押されたときの処理
 function doInitial() {
     memo.data = []
     memo.save()
@@ -26,6 +29,7 @@ type Memo = {
     date:Date
 }
 
+// メモデータを管理するクラス
 class MemoData {
     data:Memo[] = []
 
@@ -53,6 +57,8 @@ class MemoData {
 
 const memo = new MemoData()
 
+// ページの読み込みが完了したときの処理
+// ボタンにイベントを設定する
 window.addEventListener('load', () => {
     table = document.querySelector('#table')
     message = document.querySelector('#message')
