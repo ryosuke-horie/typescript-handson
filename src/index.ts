@@ -1,50 +1,69 @@
-// const person = {
-//     name: "taro",
-//     age: 30,
-//     print: function():void {
-//         console.log(this.name + '(' + this.age + ')')
-//     }
-// }
+let table:HTMLTableElement
+let message:HTMLInputElement
 
-// person.print()
-// person.name = 'hanako'
-// person.age = 20
-// person.print()
+// データから生成した内容をテーブルに追加する
+function showTable(html:string) {
+    table.innerHTML = html
+}
 
-// const person = Object()
-// person.name = 'taro'
-// person.age =39
-// person.print = function():void {
-//     console.log(this.name + '(' + this.age + ')')
-// }
+// ボタンが押されたときの処理
+function doAction() {
+    const msg = message.value
+    memo.add({message:msg,date:new Date()})
+    memo.save()
+    memo.load()
+    showTable(memo.getHtml())
+}
 
-// ファクトリ関数
-// 同じ関数をいくつでも作成する仕組み
-// function person(n:string, a:number):{name:string, age:number, print: ()=>void} {
-//     return {
-//         name:n,
-//         age:a,
-//         print: function() {
-//             console.log(this.name + '(' + this.age + ')')
-//         }
-//     }
-// }
+// 初期化ボタンが押されたときの処理
+function doInitial() {
+    memo.data = []
+    memo.save()
+    memo.load()
+    message.value = ''
+    showTable(memo.getHtml())
+}
 
-// const taro = person('taro', 39)
-// const hana = person('hana', 20)
-// taro.print()
-// hana.print()
+type Memo = {
+    message: string
+    date:Date
+}
 
+// メモデータを管理するクラス
+class MemoData {
+    data:Memo[] = []
 
-// オブジェクトを引数に使う
-// 注意：この場合、引数にはオブジェクトそのものが渡されていて、複製したわけではない
-// つまり値が変わることに注意
+    add(mm:Memo):void {
+        this.data.unshift(mm)
+    }
 
+    save():void {
+        localStorage.setItem('memo_data', JSON.stringify(this.data))
+    }
 
-// オブジェクトの分割代入
-type person = {name:{first:string, second:string}, age:number}    // person型を定義
+    load():void {
+        const readed = JSON.parse(localStorage.getItem('memo_data'))
+        this.data = readed ? readed : []
+    }
 
-const ob1:person = {name:{first:'taro', second:'yamada'}, age:39}
-const {name:{first,second}, age} = ob1                            // first,second,ageの３つの変数をオブジェクトの構造にしたがって定義。
-// const {name:{first}} = ob1                                     // firstのみがほしい場合はオブジェクトの構造にしたがうとこんな感じ
-console.log(first + '-' + second + '::' + age)
+    getHtml():string {
+        let html = '<thead><th>momo</th><th>date</th></thead><tbody>'
+        for(let item of this.data) {
+            html += '<tr><td>' + item.message + '</td><td>' + item.date.toLocaleString() + '</td></tr>'
+        }
+        return html + '</tbody>'
+    }
+}
+
+const memo = new MemoData()
+
+// ページの読み込みが完了したときの処理
+// ボタンにイベントを設定する
+window.addEventListener('load',()=>{
+    table = document.querySelector('#table')
+    message = document.querySelector('#message')
+    document.querySelector('#btn').addEventListener('click', doAction)
+    document.querySelector('#initial').addEventListener('click',doInitial)
+    memo.load()
+    showTable(memo.getHtml())
+})

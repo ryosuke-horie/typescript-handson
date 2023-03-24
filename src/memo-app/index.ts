@@ -43,7 +43,7 @@ class MemoData {
 
     load():void {
         const readed = JSON.parse(localStorage.getItem('memo_data'))
-        this.data = readed ? readed.data : []
+        this.data = readed ? readed : []
     }
 
     getHtml():string {
@@ -59,11 +59,12 @@ const memo = new MemoData()
 
 // ページの読み込みが完了したときの処理
 // ボタンにイベントを設定する
-window.addEventListener('load', () => {
+window.addEventListener('load',()=>{
     table = document.querySelector('#table')
     message = document.querySelector('#message')
     document.querySelector('#btn').addEventListener('click', doAction)
-    document.querySelector('#initial').addEventListener('click', doInitial)
+    document.querySelector('#initial').addEventListener('click',doInitial)
     memo.load()
     showTable(memo.getHtml())
 })
+
